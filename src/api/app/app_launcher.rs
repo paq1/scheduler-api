@@ -1,6 +1,12 @@
+use std::thread;
+use std::time::Duration;
+use clokwerk::{Scheduler, TimeUnits};
 use rocket::{Build, Rocket, routes};
 
-use crate::api::components::cors::CORS;
+use crate::api::app::cors::CORS;
+
+use crate::api::tasks::routes::task_read_router::hello;
+use crate::models::tasks::errors::custom::CustomError;
 
 pub struct AppLauncher;
 
@@ -12,8 +18,8 @@ impl AppLauncher {
                 .mount(
                     "/",
                     routes![
-
-                            ],
+                        hello
+                    ]
                 )
         )
     }
