@@ -37,3 +37,45 @@ pub async fn create(
             )
         })
 }
+
+#[put("/tasks/commands/running/<id>")]
+pub async fn running_task(
+    tasks_repository: &State<TasksRepositoryMongo>,
+    id: &str
+) -> Result<Json<JsonDataResponse>, status::Custom<Json<JsonDataResponse>>> {
+    tasks_repository
+        .change_state(
+            id, "running".to_string()
+        )
+        .await
+        .map(|_| Json(JsonDataResponse::new("OK")))
+        .map_err(|err| {
+            status::Custom(
+                Status::BadRequest,
+                Json(
+                    JsonDataResponse::new(err.message.as_str())
+                )
+            )
+        })
+}
+
+#[put("/tasks/commands/pending_all")]
+pub async fn pending_all_task(
+    tasks_repository: &State<TasksRepositoryMongo>,
+) -> Result<Json<JsonDataResponse>, status::Custom<Json<JsonDataResponse>>> {
+
+    let tasks = tasks_repository
+        .fetch_many()
+        .await
+        .into_iter()
+        .collect::<Vec<_>>();
+
+    for task in tasks.into_iter() {
+        tasks_repository
+            .change_state(task.id.as_str(), "pending".to_string())
+            .await
+            .expect("erreur lors d'un changement d'etat")
+    }
+
+    Ok(Json(JsonDataResponse::new("called")))
+}

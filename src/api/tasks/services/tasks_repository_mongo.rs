@@ -69,6 +69,22 @@ impl TasksRepository for TasksRepositoryMongo {
             })
             .unwrap_or_else(|err| Err(CustomError::new(format!("{}", err.to_string()).as_str())))
     }
+
+    async fn change_state(&self, id: &str, state: String) -> Result<(), CustomError> {
+        let filter = doc! {
+            "id": id
+        };
+        let update = doc! {
+            "$set": {
+                "state": state.as_str()
+            }
+        };
+        self.collection
+            .update_one(filter, update, None)
+            .await
+            .map(|_| ())
+            .map_err(|_| CustomError::new("erreur lors de l'update"))
+    }
 }
 
 impl TasksRepositoryMongo {

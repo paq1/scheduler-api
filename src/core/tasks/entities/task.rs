@@ -14,6 +14,7 @@ pub struct Task {
 impl From<Task> for TaskView {
     fn from(value: Task) -> Self {
         Self {
+            id: value.id,
             url: value.url,
             http_method: value.http_method,
             repetition_seconds: value.repetition_seconds,
