@@ -5,11 +5,11 @@ pub struct CustomError {
     pub message: String
 }
 
-// impl CustomError {
-//     pub fn new(message: &str) -> Self {
-//         Self {message: message.to_string()}
-//     }
-// }
+impl CustomError {
+    pub fn new(message: &str) -> Self {
+        Self {message: message.to_string()}
+    }
+}
 
 impl Display for CustomError {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {

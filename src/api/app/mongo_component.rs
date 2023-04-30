@@ -13,7 +13,7 @@ pub trait ClientMongoComponent {
         Client::with_options(client_option)
     }
 
-    async fn collection_user() -> Result<Collection<Document>, mongodb::error::Error> {
+    async fn collection_tasks() -> Result<Collection<Document>, mongodb::error::Error> {
         Ok(
             Self::connection()
                 .await?

@@ -1,8 +1,6 @@
 #[macro_use] extern crate rocket;
 
-use std::thread;
 use rocket::{Build, Rocket};
-use rocket::futures::TryFutureExt;
 use crate::api::app::app_launcher::AppLauncher;
 
 mod api;
